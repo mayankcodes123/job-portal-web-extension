@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Job Application CRM",
+  "version": "0.1.0",
+  "description": "Track job applications with a Kanban dashboard.",
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
