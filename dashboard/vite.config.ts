@@ -17,7 +17,29 @@ export default defineConfig({
       input: {
         dashboard: resolve(__dirname, 'dashboard.html'),
         index: resolve(__dirname, 'index.html'),
+        serviceWorker: resolve(
+          __dirname,
+          'src/background/serviceWorker.ts'
+        ),
+        naukri: resolve(
+          __dirname,
+          'src/contentScripts/naukri.ts'
+        ),
+      },
+
+      output: {
+        entryFileNames: (chunk) => {
+          if (chunk.name === 'serviceWorker') {
+            return 'serviceWorker.js';
+          }
+
+          if (chunk.name === 'naukri') {
+            return 'naukri.js';
+          }
+
+          return 'assets/[name]-[hash].js';
+        },
       },
     },
   },
-});  //mistake is that we have 3 public folderrs;
+}); //mistake is that we have 3 public folderrs;

@@ -13,12 +13,14 @@
   ],
 
   "background": {
-    "service_worker": "serviceWorker.js"
+    "service_worker": "serviceWorker.js",
+    "type": "module" 
   },
 
   "content_scripts": [
     {
       "matches": [
+        "https://naukri.com/job-listings-*",
         "https://www.naukri.com/job-listings-*"
       ],
       "js": [
