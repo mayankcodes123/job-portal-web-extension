@@ -9,7 +9,19 @@ export async function getAllJobs(): Promise<Job[]> {
 
 export async function addJob(
   input: Omit<Job, 'id' | 'createdAt' | 'updatedAt'>
-): Promise<Job> {
+): Promise<Job | null> {
+  const jobs = await getAllJobs();
+
+  // Prevent duplicate jobs using the job URL
+  const alreadyExists = jobs.some(
+    (job) => job.jobUrl === input.jobUrl
+  );
+
+  if (alreadyExists) {
+    console.log('Job already exists:', input.jobUrl);
+    return null;
+  }
+
   const now = new Date().toISOString();
 
   const job: Job = {
@@ -18,8 +30,6 @@ export async function addJob(
     createdAt: now,
     updatedAt: now,
   };
-
-  const jobs = await getAllJobs();
 
   await chrome.storage.local.set({
     [KEY]: [job, ...jobs],

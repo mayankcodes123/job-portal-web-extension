@@ -28,14 +28,25 @@ chrome.runtime.onMessage.addListener(
       experienceRequired: job.experienceRequired,
       notes: '',
     })
-      .then((savedJob) => {
-        console.log('Job saved:', savedJob);
+        .then((savedJob) => {
+  if (!savedJob) {
+    console.log('Job already exists');
 
-        sendResponse({
-          success: true,
-          job: savedJob,
-        });
-      })
+    sendResponse({
+      success: false,
+      error: 'Job already exists',
+    });
+
+    return;
+  }
+
+  console.log('Job saved:', savedJob);
+
+  sendResponse({
+    success: true,
+    job: savedJob,
+  });
+})
       .catch((error) => {
         console.error('Failed to save job:', error);
 
