@@ -25,7 +25,11 @@ export default defineConfig({
           __dirname,
           'src/contentScripts/naukri.ts'
         ),
-      },
+        wellfound: resolve(
+         __dirname,
+          'src/contentScripts/wellfound.ts'
+          ),
+          },
 
       output: {
         entryFileNames: (chunk) => {
@@ -36,6 +40,10 @@ export default defineConfig({
           if (chunk.name === 'naukri') {
             return 'naukri.js';
           }
+
+          if (chunk.name === 'wellfound') {
+              return 'wellfound.js';
+                }
 
           return 'assets/[name]-[hash].js';
         },
