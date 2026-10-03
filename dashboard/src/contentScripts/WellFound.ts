@@ -1,25 +1,50 @@
 import { extractJob } from './extractors/wellfound';
 
-function tryExtract(attempt = 1) {
-  const job = extractJob();
+chrome.runtime.onMessage.addListener(
+  (message, sender, sendResponse) => {
+    if (message.type !== 'EXTRACT_AND_SAVE') {
+      return false;
+    }
 
-  console.log(
-    `Wellfound extraction attempt ${attempt}:`,
-    job
-  );
+    function tryExtract(attempt = 1) {
+      const job = extractJob();
 
-  if (job || attempt >= 5) {
-    chrome.runtime.sendMessage({
-      type: 'EXTRACT_RESULT',
-      job,
-    });
+      console.log(
+        `Wellfound extraction attempt ${attempt}:`,
+        job
+      );
 
-    return;
+      if (job || attempt >= 5) {
+        chrome.runtime.sendMessage(
+          {
+            type: 'EXTRACT_RESULT',
+            job,
+          },
+          (response) => {
+            if (chrome.runtime.lastError) {
+              sendResponse({
+                success: false,
+                error:
+                  chrome.runtime.lastError.message,
+              });
+
+              return;
+            }
+
+            sendResponse(response);
+          }
+        );
+
+        return;
+      }
+
+      setTimeout(() => {
+        tryExtract(attempt + 1);
+      }, 1000);
+    }
+
+    tryExtract();
+
+    return true;
   }
-
-  setTimeout(() => {
-    tryExtract(attempt + 1);
-  }, 1000);
-}
-
-tryExtract();
+);

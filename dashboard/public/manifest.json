@@ -9,7 +9,9 @@
   ],
 
   "host_permissions": [
-    "https://www.naukri.com/*"
+    "https://www.naukri.com/*",
+    "https://wellfound.com/*",
+     "https://www.wellfound.com/*"
   ],
 
   "background": {
@@ -19,15 +21,24 @@
 
   "content_scripts": [
     {
-      "matches": [
-        "https://naukri.com/job-listings-*",
-        "https://www.naukri.com/job-listings-*"
-      ],
-      "js": [
-        "naukri.js"
-      ]
-    }
-  ],
+    "matches": [
+      "https://naukri.com/job-listings-*",
+      "https://www.naukri.com/job-listings-*"
+    ],
+    "js": [
+      "naukri.js"
+    ]
+  },
+  {
+    "matches": [
+      "https://wellfound.com/*",
+      "https://www.wellfound.com/*"
+    ],
+    "js": [
+      "wellfound.js"
+    ]
+  }
+],
 
   "action": {
     "default_popup": "popup.html"
