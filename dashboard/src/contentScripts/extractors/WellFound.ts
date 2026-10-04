@@ -11,7 +11,7 @@ export interface JobData {
 export function extractJob(): JobData | null {
   const title =
     document
-      .querySelector('.styles_title_xpQDw')
+      .querySelector('h1.styles_header__ZLR7s')
       ?.textContent?.trim() || '';
 
   const company =
@@ -19,10 +19,13 @@ export function extractJob(): JobData | null {
       .querySelector('.inline.text-md.font-semibold')
       ?.textContent?.trim() || '';
 
-  const location =
-    document
-      .querySelector('.styles_location__09Z62')
-      ?.textContent?.trim() || '';
+  const pageText = document.body.innerText || '';
+
+let location = '';
+
+if (pageText.includes('Everywhere')) {
+  location = 'Everywhere';
+}
 
   const compensation =
     document
