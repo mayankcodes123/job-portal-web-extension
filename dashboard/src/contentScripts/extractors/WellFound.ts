@@ -11,26 +11,43 @@ export interface JobData {
 export function extractJob(): JobData | null {
   const title =
     document
-      .querySelector('h1.styles_header__ZLR7s')
-      ?.textContent?.trim() || '';
+      .querySelector('h1')
+      ?.textContent
+      ?.trim() || '';
 
-  const company =
+  let company =
     document
       .querySelector('.inline.text-md.font-semibold')
-      ?.textContent?.trim() || '';
+      ?.textContent
+      ?.trim() || '';
 
-  const pageText = document.body.innerText || '';
+  // Fallback: extract company from job title
+  // Example: "... at Parsewave" → "Parsewave"
+  if (!company) {
+    const match = title.match(/\bat\s+(.+)$/i);
 
-let location = '';
+    if (match) {
+      company = match[1].trim();
+    }
+  }
 
-if (pageText.includes('Everywhere')) {
-  location = 'Everywhere';
-}
+  const pageText =
+    document.body.innerText || '';
+
+  let location = '';
+
+  if (pageText.includes('Everywhere')) {
+    location = 'Everywhere';
+  }
 
   const compensation =
     document
-      .querySelector('[class*="styles_compensation"]')
-      ?.textContent?.trim() || '';
+      .querySelector('h1')
+      ?.parentElement
+      ?.parentElement
+      ?.innerText
+      ?.split('\n')[1]
+      ?.trim() || '';
 
   const bodyText =
     document.body.innerText || '';
@@ -46,6 +63,11 @@ if (pageText.includes('Everywhere')) {
       'No experience required';
   }
 
+  console.log('TITLE:', title);
+  console.log('COMPANY:', company);
+  console.log('LOCATION:', location);
+  console.log('COMPENSATION:', compensation);
+
   if (!title || !company || !location) {
     return null;
   }
@@ -54,7 +76,8 @@ if (pageText.includes('Everywhere')) {
     title,
     company,
     location,
-    salary: compensation || undefined,
+    salary:
+      compensation || undefined,
     experienceRequired:
       experienceRequired || undefined,
     jobUrl: window.location.href,
