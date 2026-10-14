@@ -1,0 +1,25 @@
+# Base settings. These defaults are production-safe: no profile means no dev features.
+# Developer-only conveniences live in application-dev.yml and must be enabled explicitly.
+spring:
+  application:
+    name: reminder-service
+
+server:
+  port: ${PORT:8080}
+  shutdown: graceful          # let in-flight requests (and later, reminder sends) finish on stop
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health       # health only; env, beans, etc. are not exposed
+  endpoint:
+    health:
+      show-details: never
+
+# app.cors.allowed-origins comes from the APP_CORS_ALLOWED_ORIGINS environment variable
+# (comma-separated). Left unset, no cross-origin access is allowed. See README.

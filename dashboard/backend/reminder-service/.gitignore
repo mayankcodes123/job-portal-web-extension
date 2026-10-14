@@ -1,0 +1,29 @@
+# Build output
+target/
+
+# Secrets and local overrides - never commit these
+.env
+.env.*
+!.env.example
+application-local.yml
+application-local.yaml
+application-local.properties
+*.pem
+*.key
+*.p12
+*.jks
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+nbproject/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+HELP.md

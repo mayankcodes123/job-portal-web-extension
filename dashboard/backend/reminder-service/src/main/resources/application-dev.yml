@@ -1,0 +1,9 @@
+# Local development only. Activate with: SPRING_PROFILES_ACTIVE=dev
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:5173   # Vite dev server; extension origin is added in Part 6/7
+
+logging:
+  level:
+    com.jobcrm.reminders: DEBUG

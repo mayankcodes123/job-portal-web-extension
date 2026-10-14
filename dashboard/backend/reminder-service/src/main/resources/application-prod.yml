@@ -1,0 +1,7 @@
+# Deployment. Activate with: SPRING_PROFILES_ACTIVE=prod
+# Everything environment-specific (database, mail, JWT secret, CORS origins) comes from
+# environment variables or the host's secret store - never from this repository.
+logging:
+  level:
+    root: INFO
+    com.jobcrm.reminders: INFO
