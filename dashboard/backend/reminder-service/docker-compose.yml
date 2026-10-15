@@ -1,0 +1,26 @@
+# Local PostgreSQL for development and for the database integration tests.
+# Not used in production. Start with:  docker compose up -d
+services:
+  postgres:
+    image: postgres:16
+    container_name: reminder-service-postgres
+    environment:
+      POSTGRES_USER: reminder_app
+      # Required. docker compose reads it from the git-ignored .env file (see .env.example).
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD - copy .env.example to .env}
+      POSTGRES_DB: reminders
+    ports:
+      # Bound to this machine only. Change the host port with DB_PORT if 5432 is already taken.
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - reminder-postgres-data:/var/lib/postgresql/data
+      # Creates the extra "reminders_test" database on first start only.
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reminder_app -d reminders"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  reminder-postgres-data:
